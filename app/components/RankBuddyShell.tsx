@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import TopNav from "./TopNav";
 import MessageQuestion from "./chat/MessageQuestion";
+import MessageAnswer from "./chat/MessageAnswer";
 import MessageTrace from "./chat/MessageTrace";
 import MessageScore from "./chat/MessageScore";
 import MessageUser from "./chat/MessageUser";
@@ -35,8 +36,22 @@ export default function RankBuddyShell() {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [pdfData, setPdfData] = useState<ScoreMessage[]>([]);
   const [showPdfPanel, setShowPdfPanel] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setSignedIn(!!data.session);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     if (threadRef.current) {
@@ -132,7 +147,7 @@ export default function RankBuddyShell() {
                 setActiveSession(newSession.id);
                 setAuditCount((c) => {
                   const next = c + 1;
-                  if (next === 1) {
+                  if (next === 1 && !signedIn) {
                     setTimeout(() => setShowSignIn(true), 1500);
                   }
                   return next;
@@ -162,8 +177,26 @@ export default function RankBuddyShell() {
     await sendMessage("Run AIO analysis");
   }
 
-  async function handleGeneratePDF() {
-    await sendMessage("Generate PDF report");
+  async function downloadReport() {
+    if (!currentUrl) return;
+    const res = await fetch("/api/rank-buddy/pdf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: currentUrl, scores: pdfData }),
+    });
+    if (!res.ok) return;
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    let host = currentUrl;
+    try {
+      host = new URL(currentUrl).hostname;
+    } catch {
+      // keep raw
+    }
+    a.download = `rank-buddy-${host}.html`;
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   function getLastScoreMessage(): ScoreMessage | undefined {
@@ -233,6 +266,9 @@ export default function RankBuddyShell() {
               if (msg.kind === "question") {
                 return <MessageQuestion key={i} text={msg.text} />;
               }
+              if (msg.kind === "answer") {
+                return <MessageAnswer key={i} text={msg.text} />;
+              }
               if (msg.kind === "trace") {
                 return <MessageTrace key={i} lines={msg.lines} />;
               }
@@ -243,7 +279,7 @@ export default function RankBuddyShell() {
                     message={msg}
                     showActions={isLastScore && !isStreaming}
                     onRunAIO={hasSEO && !hasAIO ? handleRunAIO : undefined}
-                    onGeneratePDF={handleGeneratePDF}
+                    onGeneratePDF={downloadReport}
                   />
                 );
               }
@@ -295,18 +331,7 @@ export default function RankBuddyShell() {
           <PdfPreview
             scores={pdfData}
             url={currentUrl}
-            onDownload={async () => {
-              if (!currentUrl) return;
-              const params = new URLSearchParams({ url: currentUrl });
-              const res = await fetch(`/api/rank-buddy/pdf?${params}`);
-              if (res.ok) {
-                const blob = await res.blob();
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `rank-buddy-${new URL(currentUrl).hostname}.html`;
-                a.click();
-              }
-            }}
+            onDownload={downloadReport}
           />
         </aside>
       </div>

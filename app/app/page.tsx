@@ -14,8 +14,7 @@ export default function HomePage() {
             <em className={styles.headlineEm}>do the work.</em>
           </h1>
           <p className={styles.sub}>
-            Three small tools. Each one wraps a model, gives it a job, and
-            stops. Pick one to begin.
+            Three tools to help you with your business.
           </p>
         </div>
       </div>

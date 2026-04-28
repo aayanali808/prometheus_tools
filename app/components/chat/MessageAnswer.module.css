@@ -1,0 +1,24 @@
+.wrap {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 64ch;
+}
+
+.para {
+  font-family: var(--prom-font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(240, 234, 224, 0.85);
+}
+
+.para:first-child::first-letter {
+  /* keep prose unstyled — no fancy drop caps */
+}

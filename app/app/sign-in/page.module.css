@@ -83,8 +83,23 @@
   cursor: pointer;
 }
 
-.primaryBtn:hover {
+.primaryBtn:hover:not(:disabled) {
   opacity: 0.9;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--prom-flame-primary);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  padding: 8px 12px;
+  border-left: 2px solid var(--prom-flame-primary);
+  background: rgba(255, 91, 35, 0.06);
+  margin-bottom: 4px;
 }
 
 .skipLink {
