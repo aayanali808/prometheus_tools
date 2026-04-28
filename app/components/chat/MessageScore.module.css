@@ -1,0 +1,125 @@
+.wrap {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid var(--prom-border-dark);
+  background: rgba(31, 31, 31, 0.5);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.scoreBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 100px;
+}
+
+.numeral {
+  font-family: var(--prom-font-display);
+  font-size: 4rem;
+  color: var(--prom-flame-primary);
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.outOf {
+  font-size: 1.4rem;
+  color: var(--prom-text-muted);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.9rem;
+  color: rgba(240, 234, 224, 0.75);
+  line-height: 1.5;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sectionLabel {
+  font-weight: 600;
+  color: var(--prom-text-cream);
+  font-size: 0.85rem;
+}
+
+.list {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.insight {
+  font-family: var(--prom-font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--prom-text-muted);
+  border-left: 2px solid var(--prom-flame-primary);
+  padding-left: 12px;
+  margin-top: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  padding: 10px 16px;
+  background: var(--prom-flame-primary);
+  color: var(--prom-bg-primary);
+  border: none;
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+
+.btnSecondary {
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--prom-text-cream);
+  border: 1px solid var(--prom-border-dark);
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: border-color 0.15s;
+}
+
+.btnSecondary:hover {
+  border-color: rgba(240, 234, 224, 0.4);
+}
+
+@media (max-width: 600px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreBlock {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 14px;
+  }
+}

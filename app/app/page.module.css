@@ -1,0 +1,41 @@
+.page {
+  min-height: 100vh;
+  background: var(--prom-gradient-glow);
+}
+
+.hero {
+  padding: 72px 60px 48px;
+}
+
+.heroInner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.headline {
+  font-family: var(--prom-font-display);
+  font-weight: 400;
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
+  margin: 18px 0 22px;
+  line-height: 0.98;
+  max-width: 16ch;
+  color: var(--prom-text-cream);
+}
+
+.headlineEm {
+  color: var(--prom-flame-primary);
+  font-style: italic;
+}
+
+.sub {
+  max-width: 60ch;
+  color: rgba(240, 234, 224, 0.75);
+  font-size: 1.1rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 48px 24px 32px;
+  }
+}

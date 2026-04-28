@@ -1,0 +1,145 @@
+.page {
+  min-height: 100vh;
+  background: var(--prom-bg-primary);
+}
+
+.content {
+  padding: 60px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.bigNum {
+  display: block;
+  font-family: var(--prom-font-display);
+  font-size: 5rem;
+  color: rgba(240, 234, 224, 0.4);
+  font-style: italic;
+  line-height: 0.9;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-family: var(--prom-font-display);
+  font-size: 3rem;
+  font-weight: 400;
+  margin: 10px 0 0;
+  color: var(--prom-text-cream);
+}
+
+.desc {
+  color: rgba(240, 234, 224, 0.7);
+  max-width: 55ch;
+  font-size: 1rem;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+.placeholder {
+  margin-top: 36px;
+  border: 1px dashed var(--prom-border-dark);
+  height: 220px;
+  display: grid;
+  place-items: center;
+  color: var(--prom-text-muted);
+  font-family: var(--prom-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+}
+
+.notifyForm {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+
+.notifyLabel {
+  color: rgba(240, 234, 224, 0.7);
+  font-size: 0.9rem;
+}
+
+.notifyRow {
+  display: flex;
+  gap: 10px;
+}
+
+.emailInput {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--prom-border-dark);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--prom-text-cream);
+  font-family: var(--prom-font-body);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.emailInput::placeholder {
+  color: var(--prom-text-muted);
+}
+
+.emailInput:focus {
+  border-color: rgba(255, 91, 35, 0.5);
+}
+
+.notifyBtn {
+  padding: 10px 16px;
+  background: var(--prom-flame-primary);
+  color: var(--prom-bg-primary);
+  border: none;
+  font-family: var(--prom-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.notifyBtn:hover {
+  opacity: 0.9;
+}
+
+.notifyConfirm {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notifyConfirm p {
+  color: rgba(240, 234, 224, 0.7);
+  font-size: 0.9rem;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 28px;
+  font-family: var(--prom-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--prom-text-muted);
+  transition: color 0.15s;
+}
+
+.back:hover {
+  color: var(--prom-text-cream);
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 32px 24px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .notifyRow {
+    flex-direction: column;
+  }
+}

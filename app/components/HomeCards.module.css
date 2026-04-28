@@ -1,0 +1,150 @@
+.cards {
+  padding: 0 60px 80px;
+}
+
+.inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 30px 36px;
+  border: 1px solid var(--prom-border-dark);
+  background: rgba(31, 31, 31, 0.35);
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  position: relative;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+}
+
+.card:hover .openTag {
+  transform: translateX(4px);
+}
+
+.live {
+  border-color: rgba(255, 91, 35, 0.45);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 91, 35, 0.08),
+    rgba(255, 91, 35, 0.01)
+  );
+}
+
+.live:hover {
+  border-color: rgba(255, 91, 35, 0.7);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 91, 35, 0.12),
+    rgba(255, 91, 35, 0.02)
+  );
+}
+
+.soon:hover {
+  border-color: rgba(240, 234, 224, 0.15);
+}
+
+.num {
+  font-family: var(--prom-font-display);
+  font-size: 3.4rem;
+  font-style: italic;
+  line-height: 0.9;
+  color: rgba(240, 234, 224, 0.5);
+  display: block;
+}
+
+.live .num {
+  color: var(--prom-flame-primary);
+  font-size: 5rem;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardTitle {
+  font-family: var(--prom-font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--prom-text-cream);
+}
+
+.live .cardTitle {
+  font-size: 2.6rem;
+}
+
+.titleEm {
+  color: var(--prom-flame-primary);
+  font-style: normal;
+}
+
+.blurb {
+  font-size: 0.92rem;
+  color: rgba(240, 234, 224, 0.7);
+  max-width: 60ch;
+  line-height: 1.55;
+}
+
+.openTag {
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 0.15s;
+}
+
+.live .openTag {
+  color: var(--prom-flame-primary);
+}
+
+.soon .openTag {
+  color: var(--prom-text-muted);
+}
+
+@media (max-width: 768px) {
+  .cards {
+    padding: 0 24px 60px;
+  }
+
+  .card {
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: auto auto;
+    padding: 22px 20px;
+    gap: 16px;
+  }
+
+  .openTag {
+    display: none;
+  }
+
+  .num {
+    font-size: 2.4rem;
+  }
+
+  .live .num {
+    font-size: 3.2rem;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+
+  .live .cardTitle {
+    font-size: 1.8rem;
+  }
+}

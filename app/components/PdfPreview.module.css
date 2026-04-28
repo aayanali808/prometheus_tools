@@ -1,0 +1,121 @@
+.panel {
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* The "doc" area uses cream theme — it's a window into a print artifact */
+.doc {
+  background: var(--prom-bg-cream);
+  color: var(--prom-text-ink);
+  padding: 20px 16px;
+  font-family: var(--prom-font-body);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  flex: 1;
+  min-height: 360px;
+}
+
+.docTitle {
+  font-family: var(--prom-font-display);
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: var(--prom-text-ink);
+}
+
+.divider {
+  height: 1px;
+  background: var(--prom-border-light);
+  margin: 8px 0;
+}
+
+.generatedBy {
+  font-family: var(--prom-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--prom-text-graphite);
+  margin-bottom: 14px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.sectionHead {
+  font-weight: 700;
+  font-size: 0.68rem;
+  color: #FF5B23;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  font-family: var(--prom-font-mono);
+}
+
+.bigScore {
+  font-family: var(--prom-font-display);
+  font-size: 1.6rem;
+  color: #FF5B23;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.subHead {
+  font-weight: 600;
+  font-size: 0.65rem;
+  color: var(--prom-text-ink);
+  margin-top: 8px;
+  margin-bottom: 3px;
+}
+
+.item {
+  color: var(--prom-text-graphite);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  padding-left: 4px;
+}
+
+.insight {
+  font-family: var(--prom-font-display);
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--prom-text-graphite);
+  border-left: 2px solid #FF5B23;
+  padding-left: 8px;
+  margin-top: 8px;
+}
+
+.aioPlaceholder {
+  opacity: 0.5;
+}
+
+.pending {
+  color: var(--prom-text-graphite);
+  font-style: italic;
+  font-size: 0.68rem;
+}
+
+.empty {
+  color: var(--prom-text-graphite);
+  font-style: italic;
+  font-size: 0.72rem;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.download {
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  color: var(--prom-text-cream);
+  border: 1px solid var(--prom-border-dark);
+  font-family: var(--prom-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.download:hover {
+  border-color: var(--prom-text-cream);
+}

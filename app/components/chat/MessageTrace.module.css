@@ -1,0 +1,21 @@
+.wrap {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trace {
+  font-family: var(--prom-font-mono);
+  font-size: 0.78rem;
+  color: var(--prom-text-muted);
+  line-height: 1.7;
+}
+
+.line {
+  color: var(--prom-text-muted);
+}
+
+.lineActive {
+  color: var(--prom-flame-primary);
+}
