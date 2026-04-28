@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# brand reference dump — not used at runtime
+/brand-book-main/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
