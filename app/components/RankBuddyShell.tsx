@@ -194,7 +194,7 @@ export default function RankBuddyShell() {
     } catch {
       // keep raw
     }
-    a.download = `rank-buddy-${host}.html`;
+    a.download = `rank-buddy-${host}.pdf`;
     a.click();
     URL.revokeObjectURL(a.href);
   }
