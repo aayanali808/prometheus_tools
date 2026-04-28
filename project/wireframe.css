@@ -1,0 +1,441 @@
+/* ==========================================================================
+   Wireframes — Prometheus Tools Site
+   Aesthetic: low-fi but on-brand. Real Prometheus colors and type so Claude
+   Code knows the target, but with wireframe scaffolding (dashed borders,
+   placeholder rules, annotation tags) so it still reads as a wireframe and
+   not a finished design.
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--prom-bg-primary);
+  color: var(--prom-text-cream);
+  font-family: var(--prom-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Doc shell ---------- */
+
+.doc {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 56px 48px 160px;
+}
+
+.doc-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: end;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--prom-border-dark);
+  margin-bottom: 56px;
+}
+.doc-head .brand {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--prom-font-display);
+  font-size: 1.5rem;
+}
+.doc-head .orb {
+  width: 28px; height: 28px; border-radius: 999px;
+  background: var(--prom-gradient-conic);
+}
+.doc-head h1 {
+  margin: 0;
+  font-family: var(--prom-font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.005em;
+}
+.doc-head h1 em { color: var(--prom-flame-primary); font-style: italic; }
+.doc-head .meta {
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--prom-text-muted);
+  text-align: right;
+  line-height: 1.7;
+}
+
+.doc-intro {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 56px;
+  margin-bottom: 80px;
+}
+.doc-intro p {
+  margin: 0 0 14px;
+  color: rgba(240, 234, 224, 0.78);
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: 60ch;
+}
+.doc-intro h2 {
+  margin: 0 0 18px;
+  font-family: var(--prom-font-display);
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.05;
+}
+.doc-intro h2 em { color: var(--prom-flame-primary); font-style: italic; }
+.doc-intro .legend {
+  border: 1px dashed var(--prom-border-dark);
+  padding: 22px;
+  background: rgba(31, 31, 31, 0.4);
+}
+.doc-intro .legend h3 {
+  margin: 0 0 14px;
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--prom-flame-primary);
+}
+.doc-intro .legend ul { margin: 0; padding: 0; list-style: none; }
+.doc-intro .legend li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 0.88rem;
+  color: rgba(240, 234, 224, 0.75);
+  border-top: 1px solid var(--prom-border-dark);
+}
+.doc-intro .legend li:first-child { border-top: none; }
+.doc-intro .legend li b {
+  font-family: var(--prom-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--prom-flame-primary);
+  font-weight: 600;
+}
+
+/* ---------- Section / frame structure ---------- */
+
+.section {
+  margin-bottom: 96px;
+}
+.section-head {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--prom-border-dark);
+}
+.section-head .num {
+  font-family: var(--prom-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--prom-flame-primary);
+}
+.section-head h2 {
+  margin: 0;
+  font-family: var(--prom-font-display);
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1;
+}
+.section-head h2 em { color: var(--prom-flame-primary); font-style: italic; }
+.section-head .summary {
+  grid-column: 2;
+  margin: 10px 0 0;
+  color: rgba(240, 234, 224, 0.7);
+  font-size: 0.95rem;
+  max-width: 70ch;
+}
+
+/* a single labeled wireframe "frame" — label sits ABOVE the canvas so the
+   canvas gets the full doc width. */
+.frame {
+  display: block;
+  margin-bottom: 48px;
+}
+.frame-label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--prom-border-dark);
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  line-height: 1.55;
+  color: var(--prom-text-muted);
+  letter-spacing: 0.04em;
+}
+.frame-label > .tag { grid-row: 1; grid-column: 1; align-self: center; }
+.frame-label > h4   { grid-row: 1; grid-column: 2; }
+.frame-label > p    { grid-column: 1 / -1; max-width: 90ch; }
+.frame-label .tag {
+  display: inline-block;
+  padding: 3px 8px;
+  margin-bottom: 10px;
+  background: rgba(255, 91, 35, 0.12);
+  color: var(--prom-flame-primary);
+  border: 1px solid rgba(255, 91, 35, 0.35);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.frame-label h4 {
+  margin: 0;
+  font-family: var(--prom-font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--prom-text-cream);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+.frame-label p {
+  margin: 8px 0 0;
+  color: rgba(240, 234, 224, 0.6);
+  font-family: var(--prom-font-body);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.frame-canvas {
+  position: relative;
+  border: 1px dashed var(--prom-border-dark);
+  background: var(--prom-bg-deep);
+  overflow: auto;
+}
+.frame-canvas[data-theme="cream"] {
+  background: var(--prom-bg-cream);
+  color: var(--prom-text-ink);
+}
+
+/* annotation pin — number bubble + flag text */
+.annot {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: var(--prom-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--prom-flame-primary);
+  pointer-events: none;
+  z-index: 5;
+  max-width: 200px;
+}
+.annot .pin {
+  flex: 0 0 auto;
+  width: 18px; height: 18px;
+  border-radius: 999px;
+  background: var(--prom-flame-primary);
+  color: var(--prom-bg-primary);
+  display: grid; place-items: center;
+  font-weight: 700;
+  font-size: 0.7rem;
+}
+.annot .flag {
+  border-top: 1px solid var(--prom-flame-primary);
+  padding-top: 4px;
+  line-height: 1.5;
+}
+.frame-canvas[data-theme="cream"] .annot .pin {
+  color: var(--prom-bg-cream);
+}
+
+body.no-annot .annot { display: none; }
+
+/* ---------- Browser chrome (every frame is "in browser") ---------- */
+.browser {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--prom-border-dark);
+}
+.frame-canvas[data-theme="cream"] .browser-bar {
+  background: rgba(0, 0, 0, 0.03);
+  border-bottom-color: var(--prom-border-light);
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dots span {
+  width: 10px; height: 10px; border-radius: 999px;
+  background: var(--prom-border-dark);
+}
+.frame-canvas[data-theme="cream"] .browser-dots span { background: var(--prom-border-light); }
+.browser-url {
+  flex: 1;
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  color: var(--prom-text-muted);
+  background: rgba(255,255,255,0.03);
+  padding: 5px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+.frame-canvas[data-theme="cream"] .browser-url {
+  background: rgba(0,0,0,0.04);
+  color: var(--prom-text-graphite);
+}
+
+/* ---------- Top nav (consistent across all screens) ---------- */
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 36px;
+  border-bottom: 1px solid var(--prom-border-dark);
+}
+.frame-canvas[data-theme="cream"] .topnav { border-bottom-color: var(--prom-border-light); }
+.topnav .lockup {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--prom-font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.topnav .lockup .orb {
+  width: 22px; height: 22px; border-radius: 999px;
+  background: var(--prom-gradient-conic);
+}
+.topnav .nav-right {
+  display: flex; gap: 22px; align-items: center;
+  font-family: var(--prom-font-body);
+  font-size: 0.82rem;
+  color: var(--prom-text-muted);
+}
+.frame-canvas[data-theme="cream"] .topnav .nav-right { color: var(--prom-text-graphite); }
+.topnav .signin {
+  font-family: var(--prom-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--prom-border-dark);
+  color: var(--prom-text-cream);
+}
+.frame-canvas[data-theme="cream"] .topnav .signin {
+  border-color: var(--prom-text-ink);
+  color: var(--prom-text-ink);
+}
+
+/* ---------- Misc utility ---------- */
+.eye {
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--prom-flame-primary);
+}
+.placeholder-bar {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(240, 234, 224, 0.08) 0,
+    rgba(240, 234, 224, 0.08) 6px,
+    transparent 6px, transparent 12px
+  );
+  height: 12px;
+  border-radius: 1px;
+}
+.frame-canvas[data-theme="cream"] .placeholder-bar {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(28, 28, 28, 0.12) 0,
+    rgba(28, 28, 28, 0.12) 6px,
+    transparent 6px, transparent 12px
+  );
+}
+.placeholder-img {
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(240,234,224,0.06) 0, rgba(240,234,224,0.06) 8px,
+      transparent 8px, transparent 16px),
+    rgba(31, 31, 31, 0.4);
+  border: 1px dashed var(--prom-border-dark);
+  display: grid; place-items: center;
+  font-family: var(--prom-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--prom-text-muted);
+}
+
+/* divider */
+.div-rule {
+  height: 1px;
+  background: var(--prom-border-dark);
+  margin: 36px 0;
+}
+
+/* ---------- Sketchy mode (toggleable) ---------- */
+body.sketchy .frame-canvas {
+  filter: contrast(0.95) saturate(0.6);
+  border-style: solid;
+  border-color: rgba(240, 234, 224, 0.35);
+}
+body.sketchy .frame-canvas * {
+  font-family: "Caveat", "Bradley Hand", "Comic Sans MS", cursive !important;
+  letter-spacing: 0 !important;
+}
+body.sketchy .frame-canvas .placeholder-bar,
+body.sketchy .frame-canvas .placeholder-img {
+  background: repeating-linear-gradient(
+    -8deg,
+    rgba(240, 234, 224, 0.18) 0,
+    rgba(240, 234, 224, 0.18) 1px,
+    transparent 1px, transparent 5px
+  ) !important;
+}
+body.sketchy .annot { display: none; }
+
+/* ---------- Note callouts between frames ---------- */
+.note {
+  margin: 28px 0;
+  padding: 18px 22px;
+  border-left: 2px solid var(--prom-flame-primary);
+  background: rgba(255, 91, 35, 0.05);
+  font-size: 0.92rem;
+  color: rgba(240, 234, 224, 0.85);
+  line-height: 1.6;
+  max-width: 80ch;
+}
+.note b {
+  color: var(--prom-flame-primary);
+  font-family: var(--prom-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ---------- "side-by-side options" strip ---------- */
+.options-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 12px;
+}
+.options-strip .frame {
+  display: block;
+  grid-template-columns: none;
+  margin: 0;
+}
+.options-strip .frame-label {
+  position: static;
+  margin-bottom: 10px;
+}

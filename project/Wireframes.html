@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wireframes — Prometheus Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="fonts.css" />
+  <link rel="stylesheet" href="assets/color/brand.css" />
+  <link rel="stylesheet" href="wireframe.css?v=3" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="frames-home.jsx"></script>
+  <script type="text/babel" src="frames-tools.jsx"></script>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "fidelity": "onbrand",
+      "showAnnotations": true,
+      "expandedHomeCard": "01"
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+      React.useEffect(() => {
+        document.body.classList.toggle("sketchy", tweaks.fidelity === "sketchy");
+        document.body.classList.toggle("no-annot", !tweaks.showAnnotations);
+      }, [tweaks.fidelity, tweaks.showAnnotations]);
+
+      const expandedIdx = { "01": 0, "02": 1, "03": 2, "none": null }[tweaks.expandedHomeCard];
+
+      return (
+        <>
+          <main className="doc">
+            <header className="doc-head">
+              <div className="brand">
+                <span className="orb" /> Prometheus
+              </div>
+              <h1>Wireframes <em>—</em> Tools site</h1>
+              <div className="meta">
+                v0.1 · for handoff<br />
+                three workflows · home + shells<br />
+                hand off to claude code
+              </div>
+            </header>
+
+            <section className="doc-intro">
+              <div>
+                <div className="eye" style={{ marginBottom: 14 }}>Brief</div>
+                <h2>A small <em>menu</em> of AI tools, each one its own room.</h2>
+                <p>
+                  Customer-facing site. One home page with three large rows. Click a row →
+                  the row opens into a chat-style wrapper for that tool. Tool 01 is
+                  <em> Rank Buddy</em>: an SEO + AIO auditor with strict no-hallucination
+                  rules. Tools 02 and 03 are placeholders.
+                </p>
+                <p>
+                  Aesthetic is the existing <em>Prometheus</em> system: dark default,
+                  cream exhale, flame accent, Instrument Serif + DM Sans + JetBrains Mono.
+                  These wireframes use the real palette and type so the engineering target
+                  is unambiguous, but keep wireframe scaffolding (dashed borders,
+                  numbered annotations, placeholder bars) so they don't read as final.
+                </p>
+                <p style={{ color: "var(--prom-text-muted)", fontSize: "0.85rem" }}>
+                  Tweaks panel (top right) toggles between on-brand wireframe and a sketchy/handwritten render,
+                  hides annotations, and lets you preview which homepage card is "in focus" for the
+                  click-to-open transition.
+                </p>
+              </div>
+              <div className="legend">
+                <h3>How to read this doc</h3>
+                <ul>
+                  <li><b>Frame</b><span>One screen state, in a fake browser window.</span></li>
+                  <li><b>Pin</b><span>Numbered annotations call out behavior or copy intent.</span></li>
+                  <li><b>Note</b><span>Flame-bordered block = engineering note for Claude Code.</span></li>
+                  <li><b>Strip</b><span>Three frames side-by-side = options to choose between.</span></li>
+                  <li><b>Sketchy mode</b><span>Toggles a low-fi render if the brand polish reads as too final.</span></li>
+                </ul>
+              </div>
+            </section>
+
+            {/* ----- 01 HOME ----- */}
+            <section className="section">
+              <div className="section-head">
+                <span className="num">01</span>
+                <h2>Home <em>—</em> three large rows</h2>
+                <p className="summary">
+                  Full-bleed editorial scroll. Hero, then three stacked horizontal cards.
+                  Card 01 is the live tool (flame-bordered, gradient wash). Cards 02 + 03 are
+                  muted placeholders with "Coming soon" eyebrow.
+                </p>
+              </div>
+
+              <Frame
+                tag="Home / default"
+                title="Editorial three-row stack"
+                notes={[
+                  "1180px max content width, generous padding.",
+                  "Live row is differentiated by border + faint flame wash, not by size alone.",
+                  "Whole row is the click target."
+                ]}
+                height={780}
+              >
+                <HomepageScreen expandedIdx={expandedIdx} />
+              </Frame>
+
+              <div className="note">
+                <b>Engineering note · home grid</b>
+                Cards stack vertically at every width. On mobile, the numeric column collapses
+                under the title. Whole row is a single anchor (<code>{`<a href="/tools/rank-buddy">`}</code>),
+                no nested interactives. Hover state: border brightens to flame-primary, slight
+                translate-x on the "Open →" tag. Coming-soon rows are <em>not</em> disabled —
+                they route to the placeholder shell with a "notify me" CTA.
+              </div>
+            </section>
+
+            {/* ----- 02 CLICK-TO-OPEN ----- */}
+            <section className="section">
+              <div className="section-head">
+                <span className="num">02</span>
+                <h2>Click <em>→</em> open · three options to choose between</h2>
+                <p className="summary">
+                  Same trigger (click the live row), three different ways the tool can open.
+                  Pick one and we'll commit; defaults to <b>A</b>.
+                </p>
+              </div>
+
+              <Frame
+                tag="Option A · expand"
+                title="Card grows to fullscreen"
+                notes={[
+                  "FLIP-style transform: card scales from its row position to fill the viewport.",
+                  "Other rows fade. Background glow stays.",
+                  "Loading bar runs while wrapper boots.",
+                  "Most cinematic. Most JS work."
+                ]}
+                height={560}
+              >
+                <TransitionA />
+              </Frame>
+
+              <Frame
+                tag="Option B · dock"
+                title="Card docks to a left rail"
+                notes={[
+                  "Tools collapse into a persistent sidebar.",
+                  "Wrapper UI fills the right pane.",
+                  "Easy switching between tools without going back home.",
+                  "Best for long sessions across multiple tools."
+                ]}
+                height={560}
+              >
+                <TransitionB />
+              </Frame>
+
+              <Frame
+                tag="Option C · route"
+                title="Hard navigation, no animation"
+                notes={[
+                  "Standard /tools/rank-buddy page.",
+                  "Breadcrumb up top.",
+                  "Cheapest to build. Most accessible.",
+                  "Recommended fallback if A or B feels too costly."
+                ]}
+                height={560}
+              >
+                <TransitionC />
+              </Frame>
+
+              <div className="note">
+                <b>Recommendation</b>
+                Build C first (a real route per tool — needed anyway for direct linking, sign-in,
+                and SEO). Layer A's expand animation on top as a progressive enhancement when the
+                user lands from the home page. Skip B unless we discover users do hop between tools
+                often, in which case promote it later.
+              </div>
+            </section>
+
+            {/* ----- 03 RANK BUDDY ----- */}
+            <section className="section">
+              <div className="section-head">
+                <span className="num">03</span>
+                <h2>Rank Buddy <em>—</em> chat shell</h2>
+                <p className="summary">
+                  Three-column layout: session history left, conversation center, live PDF
+                  preview right. Implements the strict-mode system prompt verbatim.
+                </p>
+              </div>
+
+              <Frame
+                tag="Rank Buddy / mid-audit"
+                title="Conversation + live report"
+                notes={[
+                  "Left rail: session history; collapsible on narrow viewports.",
+                  "Center: chat thread.",
+                  "Right rail: PDF preview, populates as the audit fills out.",
+                  "Score card is a structured assistant output — not a free-text bubble."
+                ]}
+                height={760}
+              >
+                <RankBuddyChat />
+              </Frame>
+
+              <div className="note">
+                <b>Engineering note · message types</b>
+                Three distinct assistant message variants:{" "}
+                <b>(a) display question</b> — Instrument Serif italic, large, no bubble (e.g.
+                "Paste your website URL");{" "}
+                <b>(b) trace</b> — JetBrains Mono lines for browse/score steps;{" "}
+                <b>(c) structured output</b> — boxed score card with the 0–100 number, "Doing
+                well", "Needs work", "Top 3 fixes". The strict-mode system prompt should be
+                stored server-side; the chat client doesn't need to know about it.
+              </div>
+
+              <Frame
+                tag="Rank Buddy / sign-in nudge"
+                title="Optional save modal"
+                notes={[
+                  "Triggered after first audit completes.",
+                  "Magic-link only. No password.",
+                  "'Skip — keep using as guest' is a primary path, not a hidden link."
+                ]}
+                height={560}
+              >
+                <SignInModal />
+              </Frame>
+            </section>
+
+            {/* ----- 04 W2/W3 ----- */}
+            <section className="section">
+              <div className="section-head">
+                <span className="num">04</span>
+                <h2>Workflows 02 + 03 <em>—</em> placeholder shells</h2>
+                <p className="summary">
+                  Same outer chrome as Rank Buddy. Body is a "TBD" block + a "Notify me when
+                  ready" CTA. Confirms users they're in the right place and something is coming.
+                </p>
+              </div>
+
+              <Frame
+                tag="Tool 02 / coming soon"
+                title="Workflow Two — placeholder"
+                notes={[
+                  "Replace numerals + headline + body when the tool is defined.",
+                  "Reuse Rank Buddy's three-column shell once content is ready."
+                ]}
+                height={620}
+              >
+                <PlaceholderWorkflow num="02" title="Workflow Two" />
+              </Frame>
+
+              <Frame
+                tag="Tool 03 / coming soon"
+                title="Workflow Three — placeholder"
+                notes={[
+                  "Mirror of Tool 02.",
+                  "Same shell guarantees visual consistency once the third tool ships."
+                ]}
+                height={620}
+              >
+                <PlaceholderWorkflow num="03" title="Workflow Three" />
+              </Frame>
+            </section>
+
+            {/* ----- 05 HANDOFF ----- */}
+            <section className="section">
+              <div className="section-head">
+                <span className="num">05</span>
+                <h2>Handoff <em>—</em> notes for Claude Code</h2>
+                <p className="summary">Lifted constraints + the file map this wireframe set assumes.</p>
+              </div>
+
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 24,
+                marginTop: 18
+              }}>
+                <div style={{
+                  padding: 24,
+                  border: "1px solid var(--prom-border-dark)",
+                  background: "rgba(31,31,31,0.4)"
+                }}>
+                  <div className="eye" style={{ marginBottom: 12 }}>Stack assumptions</div>
+                  <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7, fontSize: "0.9rem", color: "rgba(240,234,224,0.8)" }}>
+                    <li>Next.js (app router) or any SSR framework — needs real routes per tool.</li>
+                    <li>Pull <code>brand.css</code>, fonts, and the conic-gradient orb directly from the brand-book repo.</li>
+                    <li>Streamed chat responses (SSE or fetch streams) for the trace + score output.</li>
+                    <li>PDF rendered server-side (react-pdf or puppeteer) from the same data the right rail reads.</li>
+                    <li>Auth: magic-link only (Resend / Auth.js / Clerk — caller's pick). Guest mode must work without it.</li>
+                  </ul>
+                </div>
+                <div style={{
+                  padding: 24,
+                  border: "1px solid var(--prom-border-dark)",
+                  background: "rgba(31,31,31,0.4)"
+                }}>
+                  <div className="eye" style={{ marginBottom: 12 }}>Routes</div>
+                  <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7, fontSize: "0.9rem", color: "rgba(240,234,224,0.8)" }}>
+                    <li><code>/</code> — home, three rows</li>
+                    <li><code>/tools/rank-buddy</code> — chat shell</li>
+                    <li><code>/tools/rank-buddy/r/[id]</code> — saved report (guest reports get a temp id)</li>
+                    <li><code>/tools/workflow-two</code> — placeholder</li>
+                    <li><code>/tools/workflow-three</code> — placeholder</li>
+                    <li><code>/sign-in</code> — magic-link page; modal is just a wrapper around it</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="note" style={{ marginTop: 28 }}>
+                <b>Strict-mode rules that ship with Rank Buddy</b>
+                The system prompt the user pasted in is canonical. Two scoring stages (SEO 0–100,
+                then optional AIO 0–100), evidence-only, "Not detected on reviewed pages" for
+                anything unverifiable. PDF only generates after both stages or after the user
+                explicitly asks. Keep the prompt server-side and version it.
+              </div>
+            </section>
+          </main>
+
+          <TweaksPanel>
+            <TweakSection title="Fidelity">
+              <TweakRadio
+                label="Render"
+                value={tweaks.fidelity}
+                onChange={(v) => setTweak("fidelity", v)}
+                options={[
+                  { label: "On-brand", value: "onbrand" },
+                  { label: "Sketchy", value: "sketchy" },
+                ]}
+              />
+              <TweakToggle
+                label="Show annotation pins"
+                value={tweaks.showAnnotations}
+                onChange={(v) => setTweak("showAnnotations", v)}
+              />
+            </TweakSection>
+            <TweakSection title="Home preview">
+              <TweakSelect
+                label="Focused card"
+                value={tweaks.expandedHomeCard}
+                onChange={(v) => setTweak("expandedHomeCard", v)}
+                options={[
+                  { label: "01 — Rank Buddy (default)", value: "01" },
+                  { label: "02 — Workflow Two", value: "02" },
+                  { label: "03 — Workflow Three", value: "03" },
+                  { label: "None", value: "none" },
+                ]}
+              />
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

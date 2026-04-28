@@ -1,0 +1,48 @@
+:root {
+  /* Dark theme */
+  --prom-bg-primary: #151515;
+  --prom-bg-deep: #0E0E0E;
+  --prom-bg-glow: #2E1D17;
+  --prom-text-cream: #F0EAE0;
+  --prom-text-muted: #A8A29E;
+  --prom-border-dark: #2A2A2A;
+
+  /* Cream theme */
+  --prom-bg-cream: #EFEBE8;
+  --prom-bg-cream-soft: #F5F2EE;
+  --prom-text-ink: #1C1C1C;
+  --prom-text-graphite: #525252;
+  --prom-border-light: #DCD8D4;
+
+  /* Flame */
+  --prom-flame-primary: #FF5B23;
+  --prom-flame-bright: #FE8131;
+  --prom-flame-deep: #C72B1E;
+  --prom-flame-anchor: #D94217;
+
+  /* Gradients */
+  --prom-gradient-conic: conic-gradient(
+    from 0deg at 50% 50%,
+    #FF5B23 0deg,
+    #C72B1E 90deg,
+    #D94217 180deg,
+    #FE8131 270deg,
+    #FF5B23 360deg
+  );
+  --prom-gradient-linear: linear-gradient(135deg, #FE8131 0%, #FF5B23 50%, #C72B1E 100%);
+  --prom-gradient-glow: radial-gradient(circle at 70% 30%, #2E1D17 0%, #151515 60%);
+
+  /* Type */
+  --prom-font-display: "Instrument Serif", Georgia, serif;
+  --prom-font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --prom-font-mono: "JetBrains Mono", Menlo, monospace;
+}
+
+.prom-eyebrow {
+  color: var(--prom-flame-primary);
+  font-family: var(--prom-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
