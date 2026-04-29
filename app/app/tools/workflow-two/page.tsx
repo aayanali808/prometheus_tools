@@ -9,7 +9,7 @@ export default function WorkflowTwoPage() {
     <PlaceholderWorkflow
       num="02"
       title="Workflow Two"
-      description="This wrapper is in development. It will give your team a focused AI workflow for a specific job — same shell as Rank Buddy: chat thread, live output preview, and a one-click report you can email to yourself."
+      description="This tool is in development. It will give your team a focused AI workflow for a specific job — same shell as Rank Buddy: chat thread, live output preview, and a one-click report you can email to yourself."
     />
   );
 }
