@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import Link from "next/link";
 import TopNav from "./TopNav";
 import MessageQuestion from "./chat/MessageQuestion";
 import MessageAnswer from "./chat/MessageAnswer";
@@ -12,24 +11,31 @@ import PdfPreview from "./PdfPreview";
 import { Message, ScoreMessage } from "./chat/types";
 import styles from "./RankBuddyShell.module.css";
 
-interface AuditSession {
-  id: string;
-  url: string;
-  date: string;
-  seoScore?: number;
-}
-
 const INITIAL_MESSAGE: Message = {
   kind: "question",
   text: "Paste your website URL (homepage preferred).",
 };
 
+function extractUrl(text: string): string | null {
+  const trimmed = text.trim();
+  const httpMatch = trimmed.match(/https?:\/\/\S+/i);
+  if (httpMatch) return httpMatch[0].replace(/[.,;:!?)]+$/, "");
+  const domainMatch = trimmed.match(
+    /\b((?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,})(\/\S*)?/i
+  );
+  if (domainMatch) {
+    return `https://${domainMatch[1]}${domainMatch[2] ?? ""}`.replace(
+      /[.,;:!?)]+$/,
+      ""
+    );
+  }
+  return null;
+}
+
 export default function RankBuddyShell() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-  const [sessions, setSessions] = useState<AuditSession[]>([]);
-  const [activeSession, setActiveSession] = useState<string | null>(null);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [pdfData, setPdfData] = useState<ScoreMessage[]>([]);
   const [showPdfPanel, setShowPdfPanel] = useState(false);
@@ -46,15 +52,6 @@ export default function RankBuddyShell() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  function newAudit() {
-    setMessages([INITIAL_MESSAGE]);
-    setCurrentUrl(null);
-    setPdfData([]);
-    setActiveSession(null);
-    setInput("");
-    inputRef.current?.focus();
-  }
-
   async function sendMessage(text: string) {
     if (!text.trim() || isStreaming) return;
 
@@ -63,8 +60,13 @@ export default function RankBuddyShell() {
     setInput("");
     setIsStreaming(true);
 
-    if (!currentUrl && text.trim().startsWith("http")) {
-      setCurrentUrl(text.trim());
+    let resolvedUrl = currentUrl;
+    if (!resolvedUrl) {
+      const detected = extractUrl(text);
+      if (detected) {
+        resolvedUrl = detected;
+        setCurrentUrl(detected);
+      }
     }
 
     try {
@@ -73,7 +75,7 @@ export default function RankBuddyShell() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [...messages, userMsg],
-          url: currentUrl || (text.trim().startsWith("http") ? text.trim() : undefined),
+          url: resolvedUrl ?? undefined,
         }),
       });
 
@@ -113,21 +115,6 @@ export default function RankBuddyShell() {
               if (parsed.kind === "score") {
                 setPdfData((prev) => [...prev, parsed as ScoreMessage]);
                 setShowPdfPanel(true);
-
-                const urlForSession =
-                  currentUrl ||
-                  (text.trim().startsWith("http") ? text.trim() : "audit");
-                const newSession: AuditSession = {
-                  id: Date.now().toString(),
-                  url: urlForSession,
-                  date: new Date().toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  }),
-                  seoScore: parsed.scoreType === "SEO" ? parsed.score : undefined,
-                };
-                setSessions((prev) => [newSession, ...prev.slice(0, 9)]);
-                setActiveSession(newSession.id);
               }
             }
           } catch {
@@ -135,7 +122,7 @@ export default function RankBuddyShell() {
           }
         }
       }
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
@@ -168,46 +155,6 @@ export default function RankBuddyShell() {
     <div className={styles.shell}>
       <TopNav />
       <div className={styles.columns}>
-        {/* Left: history rail */}
-        <aside className={styles.history}>
-          <span className="eyebrow">Rank Buddy</span>
-          <button className={styles.newAudit} onClick={newAudit}>
-            + New audit
-          </button>
-          {sessions.length > 0 && (
-            <>
-              <span className={styles.recentLabel}>Recent</span>
-              <ul className={styles.sessionList}>
-                {sessions.map((s) => (
-                  <li
-                    key={s.id}
-                    className={`${styles.sessionItem} ${
-                      s.id === activeSession ? styles.sessionActive : ""
-                    }`}
-                  >
-                    <span className={styles.sessionUrl}>
-                      {s.url.replace(/^https?:\/\//, "")}
-                    </span>
-                    <span className={styles.sessionMeta}>
-                      {s.seoScore !== undefined ? `SEO ${s.seoScore} · ` : ""}
-                      {s.date}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {sessions.length === 0 && (
-            <p className={styles.emptyHistory}>
-              Your recent audits will appear here.
-            </p>
-          )}
-          <Link href="/" className={styles.backLink}>
-            ← All tools
-          </Link>
-        </aside>
-
-        {/* Center: chat thread */}
         <main className={styles.chatCol}>
           <div className={styles.thread} ref={threadRef}>
             {messages.map((msg, i) => {
@@ -279,7 +226,6 @@ export default function RankBuddyShell() {
           </div>
         </main>
 
-        {/* Right: PDF preview */}
         <aside className={`${styles.pdfPanel} ${showPdfPanel ? styles.pdfPanelVisible : ""}`}>
           <PdfPreview scores={pdfData} url={currentUrl} />
         </aside>

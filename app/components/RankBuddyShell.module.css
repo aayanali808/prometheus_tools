@@ -8,122 +8,9 @@
 
 .columns {
   display: grid;
-  grid-template-columns: minmax(200px, 220px) 1fr minmax(220px, 260px);
+  grid-template-columns: 1fr minmax(260px, 320px);
   overflow: hidden;
   min-height: 0;
-}
-
-/* ---- History rail ---- */
-.history {
-  border-right: 1px solid var(--prom-border-dark);
-  padding: 22px 18px;
-  background: var(--prom-bg-deep);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  overflow-y: auto;
-}
-
-.history .eyebrow {
-  display: block;
-  margin-bottom: 14px;
-}
-
-.newAudit {
-  width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 18px;
-  background: var(--prom-flame-primary);
-  color: var(--prom-bg-primary);
-  border: none;
-  font-family: var(--prom-font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 600;
-  transition: opacity 0.15s;
-}
-
-.newAudit:hover {
-  opacity: 0.9;
-}
-
-.recentLabel {
-  font-family: var(--prom-font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  color: var(--prom-text-muted);
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.sessionList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-}
-
-.sessionItem {
-  padding: 10px 12px;
-  font-size: 0.82rem;
-  border-left: 2px solid transparent;
-  color: var(--prom-text-muted);
-  cursor: pointer;
-  transition: color 0.15s, background 0.15s;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.sessionItem:hover {
-  color: var(--prom-text-cream);
-  background: rgba(255, 91, 35, 0.03);
-}
-
-.sessionActive {
-  border-left-color: var(--prom-flame-primary);
-  background: rgba(255, 91, 35, 0.05);
-  color: var(--prom-text-cream);
-}
-
-.sessionUrl {
-  font-size: 0.82rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.sessionMeta {
-  font-family: var(--prom-font-mono);
-  font-size: 0.6rem;
-  color: var(--prom-text-muted);
-  letter-spacing: 0.05em;
-}
-
-.emptyHistory {
-  font-size: 0.8rem;
-  color: var(--prom-text-muted);
-  line-height: 1.5;
-  flex: 1;
-}
-
-.backLink {
-  display: block;
-  margin-top: auto;
-  padding-top: 18px;
-  font-family: var(--prom-font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--prom-text-muted);
-  transition: color 0.15s;
-}
-
-.backLink:hover {
-  color: var(--prom-text-cream);
 }
 
 /* ---- Chat column ---- */
@@ -239,9 +126,8 @@
   border-left: 1px solid var(--prom-border-dark);
   background: var(--prom-bg-deep);
   overflow-y: auto;
-  /* start hidden, slide in when data arrives */
   transition: opacity 0.3s;
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 .pdfPanelVisible {
@@ -258,46 +144,11 @@
 
   .columns {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     overflow: visible;
   }
 
-  .history {
-    order: 3;
-    border-right: none;
-    border-top: 1px solid var(--prom-border-dark);
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 16px 18px;
-    gap: 10px;
-  }
-
-  .history .eyebrow {
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  .sessionList {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .sessionItem {
-    padding: 6px 10px;
-    border-left: none;
-    border-bottom: 2px solid transparent;
-    font-size: 0.75rem;
-  }
-
-  .sessionActive {
-    border-bottom-color: var(--prom-flame-primary);
-    border-left: none;
-    background: none;
-  }
-
   .chatCol {
-    order: 1;
     height: auto;
     min-height: 60vh;
   }
@@ -309,7 +160,6 @@
   }
 
   .pdfPanel {
-    order: 2;
     border-left: none;
     border-top: 1px solid var(--prom-border-dark);
   }

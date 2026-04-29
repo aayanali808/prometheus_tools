@@ -1,7 +1,7 @@
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 18px 36px;
   border-bottom: 1px solid var(--prom-border-dark);
   position: sticky;
@@ -33,36 +33,8 @@
   letter-spacing: -0.01em;
 }
 
-.right {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-  font-family: var(--prom-font-body);
-  font-size: 0.82rem;
-  color: var(--prom-text-muted);
-}
-
-.navLink {
-  color: var(--prom-text-muted);
-  transition: color 0.15s;
-}
-
-.navLink:hover {
-  color: var(--prom-text-cream);
-}
-
-.navLinkMuted {
-  opacity: 0.5;
-}
-
 @media (max-width: 600px) {
   .nav {
     padding: 14px 20px;
-  }
-  .navLinkMuted {
-    display: none;
-  }
-  .right {
-    gap: 14px;
   }
 }

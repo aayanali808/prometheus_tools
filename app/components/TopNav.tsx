@@ -8,11 +8,6 @@ export default function TopNav() {
         <span className={styles.orb} aria-hidden="true" />
         <span className={styles.wordmark}>Prometheus</span>
       </Link>
-      <div className={styles.right}>
-        <Link href="/" className={styles.navLink}>Tools</Link>
-        <span className={styles.navLinkMuted}>About</span>
-        <span className={styles.navLinkMuted}>Contact</span>
-      </div>
     </nav>
   );
 }
