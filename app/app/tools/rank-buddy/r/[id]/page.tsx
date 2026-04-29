@@ -10,8 +10,8 @@ export default function SavedReportPage({ params }: { params: { id: string } }) 
         <span className="eyebrow">Saved Report · {params.id}</span>
         <h1 className={styles.title}>Report not found.</h1>
         <p className={styles.desc}>
-          This report may have expired (guest reports last 7 days) or doesn't
-          exist. Sign in to access saved reports permanently.
+          This report may have expired or never existed. Run a new audit to
+          generate a fresh one.
         </p>
         <Link href="/tools/rank-buddy" className={styles.back}>
           Start a new audit →

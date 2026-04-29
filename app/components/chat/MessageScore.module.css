@@ -7,7 +7,7 @@
 
 .card {
   border: 1px solid var(--prom-border-dark);
-  background: rgba(31, 31, 31, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   padding: 28px 28px 24px;
   display: flex;
   flex-direction: column;
@@ -104,7 +104,7 @@
 .bar {
   position: relative;
   height: 3px;
-  background: rgba(240, 234, 224, 0.08);
+  background: rgba(28, 28, 28, 0.08);
   overflow: hidden;
 }
 
@@ -151,7 +151,7 @@
   gap: 4px;
   font-size: 0.85rem;
   line-height: 1.45;
-  color: rgba(240, 234, 224, 0.78);
+  color: rgba(28, 28, 28, 0.78);
 }
 
 .findingsList li {
@@ -294,19 +294,91 @@
 
 .gapText {
   font-size: 0.88rem;
-  color: rgba(240, 234, 224, 0.8);
+  color: rgba(28, 28, 28, 0.8);
   line-height: 1.5;
 }
 
-/* ---- Actions ---- */
-.actions {
+/* ---- Report panel (email-the-PDF flow) ---- */
+.reportPanel {
+  margin-top: 4px;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.btnPrimary {
-  padding: 10px 16px;
+.bigDownload {
+  width: 100%;
+  padding: 22px 28px;
+  background: var(--prom-flame-primary);
+  color: var(--prom-bg-primary);
+  border: none;
+  font-family: var(--prom-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+  background: linear-gradient(135deg, #FE8131 0%, #FF5B23 50%, #C72B1E 100%);
+}
+
+.bigDownload:hover {
+  filter: brightness(1.05);
+}
+
+.bigDownload:active {
+  transform: translateY(1px);
+}
+
+.emailForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px 20px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--prom-border-dark);
+}
+
+.emailLabel {
+  font-family: var(--prom-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--prom-flame-primary);
+  font-weight: 600;
+}
+
+.emailRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.emailInput {
+  padding: 12px 14px;
+  background: transparent;
+  color: var(--prom-text-cream);
+  border: 1px solid var(--prom-border-dark);
+  font-family: var(--prom-font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.emailInput:focus {
+  border-color: var(--prom-flame-primary);
+}
+
+.emailInput::placeholder {
+  color: rgba(28, 28, 28, 0.4);
+}
+
+.emailInput:disabled {
+  opacity: 0.6;
+}
+
+.emailSubmit {
+  padding: 12px 18px;
   background: var(--prom-flame-primary);
   color: var(--prom-bg-primary);
   border: none;
@@ -314,33 +386,66 @@
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  cursor: pointer;
   transition: opacity 0.15s;
+  white-space: nowrap;
 }
 
-.btnPrimary:hover {
-  opacity: 0.9;
+.emailSubmit:hover:not(:disabled) {
+  opacity: 0.92;
 }
 
-.btnSecondary {
-  padding: 10px 16px;
-  background: transparent;
-  color: var(--prom-text-cream);
-  border: 1px solid var(--prom-border-dark);
+.emailSubmit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.emailError {
   font-family: var(--prom-font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  transition: border-color 0.15s;
+  color: #E66B4D;
+  letter-spacing: 0.05em;
 }
 
-.btnSecondary:hover {
-  border-color: rgba(240, 234, 224, 0.4);
+.sentBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--prom-flame-primary);
+  background: rgba(255, 91, 35, 0.08);
+}
+
+.sentEyebrow {
+  font-family: var(--prom-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--prom-flame-primary);
+  font-weight: 600;
+}
+
+.sentMessage {
+  font-family: var(--prom-font-display);
+  font-size: 1.05rem;
+  color: var(--prom-text-cream);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.sentMessage strong {
+  color: var(--prom-flame-primary);
+  font-weight: 500;
 }
 
 @media (max-width: 700px) {
   .card {
     padding: 22px 20px 20px;
+  }
+
+  .emailRow {
+    grid-template-columns: 1fr;
   }
 
   .header {

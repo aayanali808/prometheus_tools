@@ -4,7 +4,6 @@ import styles from "./PdfPreview.module.css";
 interface Props {
   scores: ScoreMessage[];
   url: string | null;
-  onDownload: () => void;
 }
 
 function legacyCategories(s: ScoreMessage): ScoreCategory[] {
@@ -69,7 +68,7 @@ function ScoreSection({ s }: { s: ScoreMessage }) {
   );
 }
 
-export default function PdfPreview({ scores, url, onDownload }: Props) {
+export default function PdfPreview({ scores, url }: Props) {
   let hostname: string | null = null;
   if (url) {
     try {
@@ -109,11 +108,6 @@ export default function PdfPreview({ scores, url, onDownload }: Props) {
           </div>
         )}
       </div>
-      {hostname && (
-        <button className={styles.download} onClick={onDownload}>
-          ↓ Download Report
-        </button>
-      )}
     </div>
   );
 }

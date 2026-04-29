@@ -9,7 +9,6 @@ import MessageTrace from "./chat/MessageTrace";
 import MessageScore from "./chat/MessageScore";
 import MessageUser from "./chat/MessageUser";
 import PdfPreview from "./PdfPreview";
-import SignInModal from "./SignInModal";
 import { Message, ScoreMessage } from "./chat/types";
 import styles from "./RankBuddyShell.module.css";
 
@@ -31,27 +30,11 @@ export default function RankBuddyShell() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [sessions, setSessions] = useState<AuditSession[]>([]);
   const [activeSession, setActiveSession] = useState<string | null>(null);
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [auditCount, setAuditCount] = useState(0);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [pdfData, setPdfData] = useState<ScoreMessage[]>([]);
   const [showPdfPanel, setShowPdfPanel] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/auth/session")
-      .then((r) => r.json())
-      .then((data) => {
-        if (!cancelled) setSignedIn(!!data.session);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const scrollToBottom = useCallback(() => {
     if (threadRef.current) {
@@ -145,13 +128,6 @@ export default function RankBuddyShell() {
                 };
                 setSessions((prev) => [newSession, ...prev.slice(0, 9)]);
                 setActiveSession(newSession.id);
-                setAuditCount((c) => {
-                  const next = c + 1;
-                  if (next === 1 && !signedIn) {
-                    setTimeout(() => setShowSignIn(true), 1500);
-                  }
-                  return next;
-                });
               }
             }
           } catch {
@@ -173,46 +149,24 @@ export default function RankBuddyShell() {
     }
   }
 
-  async function handleRunAIO() {
-    await sendMessage("Run AIO analysis");
-  }
-
-  async function downloadReport() {
-    if (!currentUrl) return;
-    const res = await fetch("/api/rank-buddy/pdf", {
+  async function emailReport(email: string) {
+    if (!currentUrl) {
+      throw new Error("No audit URL on this session yet.");
+    }
+    const res = await fetch("/api/rank-buddy/email-report", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: currentUrl, scores: pdfData }),
+      body: JSON.stringify({ url: currentUrl, scores: pdfData, email }),
     });
-    if (!res.ok) return;
-    const blob = await res.blob();
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    let host = currentUrl;
-    try {
-      host = new URL(currentUrl).hostname;
-    } catch {
-      // keep raw
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data?.error ?? "Failed to send report.");
     }
-    a.download = `rank-buddy-${host}.pdf`;
-    a.click();
-    URL.revokeObjectURL(a.href);
   }
-
-  function getLastScoreMessage(): ScoreMessage | undefined {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].kind === "score") return messages[i] as ScoreMessage;
-    }
-    return undefined;
-  }
-
-  const lastScore = getLastScoreMessage();
-  const hasSEO = messages.some((m) => m.kind === "score" && (m as ScoreMessage).scoreType === "SEO");
-  const hasAIO = messages.some((m) => m.kind === "score" && (m as ScoreMessage).scoreType === "AIO");
 
   return (
     <div className={styles.shell}>
-      <TopNav onSignIn={() => setShowSignIn(true)} />
+      <TopNav />
       <div className={styles.columns}>
         {/* Left: history rail */}
         <aside className={styles.history}>
@@ -278,8 +232,7 @@ export default function RankBuddyShell() {
                     key={i}
                     message={msg}
                     showActions={isLastScore && !isStreaming}
-                    onRunAIO={hasSEO && !hasAIO ? handleRunAIO : undefined}
-                    onGeneratePDF={downloadReport}
+                    onSendReport={emailReport}
                   />
                 );
               }
@@ -328,17 +281,9 @@ export default function RankBuddyShell() {
 
         {/* Right: PDF preview */}
         <aside className={`${styles.pdfPanel} ${showPdfPanel ? styles.pdfPanelVisible : ""}`}>
-          <PdfPreview
-            scores={pdfData}
-            url={currentUrl}
-            onDownload={downloadReport}
-          />
+          <PdfPreview scores={pdfData} url={currentUrl} />
         </aside>
       </div>
-
-      {showSignIn && (
-        <SignInModal onClose={() => setShowSignIn(false)} />
-      )}
     </div>
   );
 }

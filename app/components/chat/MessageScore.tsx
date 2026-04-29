@@ -1,10 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./MessageScore.module.css";
 import { ScoreMessage, ScoreCategory, PrioritizedFix } from "./types";
 
 interface Props {
   message: ScoreMessage;
-  onRunAIO?: () => void;
-  onGeneratePDF?: () => void;
+  onSendReport?: (email: string) => Promise<void>;
   showActions?: boolean;
 }
 
@@ -36,10 +38,35 @@ function impactDotCount(impact?: string): number {
   return 1;
 }
 
-export default function MessageScore({ message, onRunAIO, onGeneratePDF, showActions }: Props) {
-  const isSEO = message.scoreType === "SEO";
+type EmailMode = "idle" | "form" | "sending" | "sent";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export default function MessageScore({ message, onSendReport, showActions }: Props) {
   const categories = message.categories ?? legacyCategories(message);
   const fixes = legacyFixes(message);
+
+  const [mode, setMode] = useState<EmailMode>("idle");
+  const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!onSendReport) return;
+    if (!EMAIL_RE.test(email)) {
+      setErrorMsg("Enter a valid email address.");
+      return;
+    }
+    setErrorMsg(null);
+    setMode("sending");
+    try {
+      await onSendReport(email);
+      setMode("sent");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to send report.");
+      setMode("form");
+    }
+  }
 
   return (
     <div className={styles.wrap}>
@@ -143,17 +170,54 @@ export default function MessageScore({ message, onRunAIO, onGeneratePDF, showAct
         )}
       </div>
 
-      {showActions && (
-        <div className={styles.actions}>
-          {isSEO && onRunAIO && (
-            <button className={styles.btnPrimary} onClick={onRunAIO}>
-              Run AIO analysis →
-            </button>
-          )}
-          {onGeneratePDF && (
-            <button className={styles.btnSecondary} onClick={onGeneratePDF}>
+      {showActions && onSendReport && (
+        <div className={styles.reportPanel}>
+          {mode === "idle" && (
+            <button
+              type="button"
+              className={styles.bigDownload}
+              onClick={() => setMode("form")}
+            >
               Download report
             </button>
+          )}
+
+          {(mode === "form" || mode === "sending") && (
+            <form className={styles.emailForm} onSubmit={handleSubmit}>
+              <label className={styles.emailLabel} htmlFor="report-email">
+                Where should we send the PDF?
+              </label>
+              <div className={styles.emailRow}>
+                <input
+                  id="report-email"
+                  type="email"
+                  className={styles.emailInput}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
+                  autoFocus
+                  required
+                  disabled={mode === "sending"}
+                />
+                <button
+                  type="submit"
+                  className={styles.emailSubmit}
+                  disabled={mode === "sending" || !email.trim()}
+                >
+                  {mode === "sending" ? "Sending…" : "Email me the PDF →"}
+                </button>
+              </div>
+              {errorMsg && <span className={styles.emailError}>{errorMsg}</span>}
+            </form>
+          )}
+
+          {mode === "sent" && (
+            <div className={styles.sentBox}>
+              <span className={styles.sentEyebrow}>Sent</span>
+              <p className={styles.sentMessage}>
+                Sent to <strong>{email}</strong> — check your inbox.
+              </p>
+            </div>
           )}
         </div>
       )}

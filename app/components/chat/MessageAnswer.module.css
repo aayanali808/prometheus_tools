@@ -16,7 +16,7 @@
   font-family: var(--prom-font-body);
   font-size: 0.95rem;
   line-height: 1.6;
-  color: rgba(240, 234, 224, 0.85);
+  color: rgba(28, 28, 28, 0.85);
 }
 
 .para:first-child::first-letter {
