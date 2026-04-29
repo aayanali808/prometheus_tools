@@ -5,19 +5,12 @@ interface Props {
 }
 
 export default function MessageTrace({ lines }: Props) {
+  const text = lines.join(" · ");
+  if (!text.trim()) return null;
   return (
     <div className={styles.wrap}>
-      <span className="eyebrow">Rank Buddy</span>
-      <div className={styles.trace}>
-        {lines.map((line, i) => {
-          const isActive = line.includes("scoring") || line.includes("analyzing");
-          return (
-            <div key={i} className={isActive ? styles.lineActive : styles.line}>
-              {line}
-            </div>
-          );
-        })}
-      </div>
+      <span className={styles.dot} aria-hidden="true" />
+      <span className={styles.label}>{text}</span>
     </div>
   );
 }
